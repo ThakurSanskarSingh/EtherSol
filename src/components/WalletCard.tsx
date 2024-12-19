@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Eye, EyeOff, Trash2 } from 'lucide-react';
+import { fetchSolanaBalance,fetchEthereumBalance } from '../utils/FetchBalance';
 export interface Wallet {
     id: number;
     type: 'Ethereum' | 'Solana';
     publicKey: string;
     privateKey: string;
+    balance? : string
   }
 
 interface WalletCardProps {
@@ -20,7 +22,23 @@ export const WalletCard: React.FC<WalletCardProps> = ({
   privateKey,
   onDelete,
 }) => {
+
+    
   const [showPrivateKey, setShowPrivateKey] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string>('Fetching...');
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (type === 'Ethereum') {
+        const ethBalance = await fetchEthereumBalance(publicKey);
+        setBalance(ethBalance);
+      } else if (type === 'Solana') {
+        const solBalance = await fetchSolanaBalance(publicKey);
+        setBalance(solBalance);
+      }
+    };
+    fetchBalance();
+  }, [type, publicKey]);
 
   return (
     <div className="bg-gray-900 p-6 rounded-lg space-y-4">
@@ -54,6 +72,12 @@ export const WalletCard: React.FC<WalletCardProps> = ({
           </div>
           <div className="bg-gray-800 p-3 rounded text-gray-300 font-mono text-sm break-all">
             {showPrivateKey ? privateKey : '••••••••••••••••••••••••••••••••'}
+          </div>
+        </div>
+        <div>
+          <label className="text-gray-400 text-sm">Balance</label>
+          <div className="bg-gray-800 p-3 rounded text-gray-300 font-mono text-sm">
+            {balance}
           </div>
         </div>
       </div>

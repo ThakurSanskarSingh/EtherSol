@@ -38,13 +38,13 @@ export const WalletGenerationPanel: React.FC<WalletGenerationPanelProps> = ({
           onClick={generateEthereumWalletHandler}
           className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors"
         >
-          Generate Ethereum Wallet (Index: {ethereumIndex})
+          Generate Ethereum Wallet 
         </button>
         <button
           onClick={generateSolanaWalletHandler}
           className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium transition-colors"
         >
-          Generate Solana Wallet (Index: {solanaIndex})
+          Generate Solana Wallet 
         </button>
       </div>
     </div>
